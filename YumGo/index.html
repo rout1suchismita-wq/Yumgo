@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YumGo - Food Delivery</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf5;
+  color: #222;
+}
+
+header {
+  background: white;
+  padding: 18px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 2px 10px #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff9418;
+}
+
+.logo span {
+  color: #222;
+}
+
+nav {
+  display: flex;
+  gap: 25px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #ff9418;
+}
+
+.cart {
+  background: #ff9418;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.hero {
+  min-height: 380px;
+  padding: 55px 7%;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, #21150de8, #21150d33),
+    url("images/banner.jpeg") center/cover no-repeat;
+  color: white;
+}
+
+.hero-content {
+  max-width: 550px;
+}
+
+.hero h1 {
+  font-size: clamp(32px, 5vw, 55px);
+  line-height: 1.15;
+  margin: 15px 0;
+}
+
+.hero h1 span {
+  color: #ffad24;
+}
+
+.hero p {
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.address {
+  display: flex;
+  gap: 8px;
+  max-width: 500px;
+}
+
+.address input {
+  min-width: 0;
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 25px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.btn {
+  border: none;
+  background: #ff9418;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+section {
+  padding: 35px 7%;
+}
+
+.section-title {
+  margin-bottom: 20px;
+}
+
+.section-title p {
+  margin-top: 8px;
+  color: #666;
+}
+
+.categories, .products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.category {
+  background: white;
+  padding: 22px 10px;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px #eee;
+}
+
+.category .emoji {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.product {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px #e8e0d8;
+  position: relative;
+}
+
+.product img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-info h3 {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-weight: bold;
+  color: #e77d00;
+  margin-bottom: 12px;
+}
+
+.product-info .btn {
+  width: 100%;
+  padding: 10px;
+}
+
+.search-box {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 0 0 20px;
+}
+
+.offer {
+  margin: 10px 7% 35px;
+  padding: 30px;
+  border-radius: 18px;
+  background: #fff0d9;
+  text-align: center;
+}
+
+.offer h2 {
+  color: #df7600;
+  margin-bottom: 10px;
+}
+
+footer {
+  background: #21150d;
+  color: white;
+  text-align: center;
+  padding: 25px;
+  line-height: 1.8;
+}
+
+@media (max-width: 750px) {
+  header {
+    flex-wrap: wrap;
+    padding: 15px 5%;
+  }
+
+  nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .hero {
+    padding: 40px 5%;
+    min-height: 350px;
+  }
+
+  section {
+    padding: 28px 5%;
+  }
+
+  .categories, .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .product img {
+    height: 130px;
+  }
+
+  .address {
+    flex-wrap: wrap;
+  }
+
+  .address input {
+    flex-basis: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🍔 Yum<span>Go</span></div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#offers">Offers</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <button class="cart" onclick="showCart()">
+    🛒 Cart (<span id="cartCount">0</span>)
+  </button>
+</header>
+
+<div class="hero" id="home">
+  <div class="hero-content">
+    <p>🍃 Good Food • Fresh • Fast</p>
+    <h1>Delicious Food,<br>
+      <span>Delivered to Your Door!</span>
+    </h1>
+    <p>From your favorite meals to your home.
+      Order now and satisfy your cravings!</p>
+
+    <div class="address">
+      <input id="address" type="text"
+        placeholder="Enter your delivery address">
+      <button class="btn" onclick="findFood()">Find Food →</button>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="section-title">
+    <h2>Popular Categories</h2>
+    <p>Explore your favorite food categories</p>
+  </div>
+
+  <div class="categories">
+    <div class="category"><div class="emoji">🍔</div>Burgers</div>
+    <div class="category"><div class="emoji">🍕</div>Pizza</div>
+    <div class="category"><div class="emoji">🍟</div>Fast Food</div>
+    <div class="category"><div class="emoji">🍜</div>Noodles</div>
+    <div class="category"><div class="emoji">🥗</div>Healthy</div>
+    <div class="category"><div class="emoji">🍰</div>Desserts</div>
+    <div class="category"><div class="emoji">🥤</div>Beverages</div>
+    <div class="category"><div class="emoji">🍛</div>Indian Meals</div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="section-title">
+    <h2>Featured Foods</h2>
+    <p>Handpicked meals, just for you</p>
+  </div>
+
+  <input class="search-box" id="search"
+    type="text" placeholder="🔍 Search burgers, pizza, noodles..."
+    oninput="searchFoods()">
+
+  <div class="products">
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"
+        alt="Cheese Burger">
+      <div class="product-info">
+        <h3>Classic Cheese Burger</h3>
+        <p class="price">₹149</p>
+        <button class="btn" onclick="addCart('Classic Cheese Burger',149)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-157 pizza"
+        alt="Veggie Pizza"
+        onerror="this.src='https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600'">
+      <div class="product-info">
+        <h3>Veggie Pizza</h3>
+        <p class="price">₹179</p>
+        <button class="btn" onclick="addCart('Veggie Pizza',179)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600"
+        alt="Noodles">
+      <div class="product-info">
+        <h3>Hakka Noodles</h3>
+        <p class="price">₹129</p>
+        <button class="btn" onclick="addCart('Hakka Noodles',129)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600"
+        alt="Chocolate Dessert">
+      <div class="product-info">
+        <h3>Chocolate Dessert</h3>
+        <p class="price">₹99</p>
+        <button class="btn" onclick="addCart('Chocolate Dessert',99)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="offer" id="offers">
+  <h2>🎉 Special Offer!</h2>
+  <p>Enjoy delicious food at pocket-friendly prices.</p>
+  <p>Fresh food, fast delivery, happy you!</p>
+</div>
+
+<footer id="contact">
+  <h2>🍔 YumGo</h2>
+  <p>Your Cravings, Delivered!</p>
+  <p>Contact: hello@yumgo.example</p>
+  <small>© 2026 YumGo. Demo website for learning.</small>
+</footer>
+
+<script>
+let cart = [];
+
+function addCart(name, price) {
+  cart.push({name: name, price: price});
+  document.getElementById("cartCount").textContent = cart.length;
+  alert(name + " added to cart!");
+}
+
+function showCart() {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  let details = cart.map(item => item.name + " - ₹" + item.price).join("\n");
+
+  alert("Your Cart:\n" + details + "\n\nTotal: ₹" + total);
+}
+
+function searchFoods() {
+  let query = document.getElementById("search").value.toLowerCase();
+
+  document.querySelectorAll(".product").forEach(product => {
+    product.style.display =
+      product.textContent.toLowerCase().includes(query) ? "block" : "none";
+  });
+}
+
+function findFood() {
+  let address = document.getElementById("address").value.trim();
+
+  if (address === "") {
+    alert("Please enter your delivery address.");
+    return;
+  }
+
+  document.getElementById("menu").scrollIntoView({behavior: "smooth"});
+}
+</script>
+
+</body>
+</html>
